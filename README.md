@@ -24,7 +24,6 @@ Crear un marketplace donde los usuarios puedan listar y comprar objetos mágicos
 ```
 /magic-marketplace
 ├── frontend/  # Aplicación del lado del cliente
-├── backend/   # Servidor y lógica de negocio
 ├── docs/      # Documentación del proyecto
 └── README.md  # Este archivo
 ```
