@@ -52,7 +52,7 @@ Crear un marketplace donde los usuarios puedan listar y comprar objetos mágicos
 **Frontend:**
 - wjmmk
 - ZarakiLancelot
-- [Nombre del Integrante 3]
+- puriihuaman
 - Sandra13988
 
 **Backend:**
