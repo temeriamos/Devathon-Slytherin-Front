@@ -1,27 +1,63 @@
-# DevathonSlytherinFront
+# 🧙‍♂️ Magic Marketplace
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.12.
+## 🎯 Objetivo
+Crear un marketplace donde los usuarios puedan listar y comprar objetos mágicos.
 
-## Development server
+## 🚀 Lógica de negocio principal
+- Los usuarios pueden listar objetos a la venta con descripción y precio.
+- Los objetos pueden ser comprados con monedas mágicas (galeones, sickles, knuts).
+- Algunos objetos tienen efectos especiales (desaparecen si no se venden rápido).
+- Los usuarios pueden administrar su inventario de objetos (carrito).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 📌 Devathon 9na Edición
+- **Grupo:** Slytherin
+- **Organizador:** Programación en Español 
 
-## Code scaffolding
+## 🛠️ Tecnologías
+- **Frontend:** Angular
+- **Backend:** Spring Boot
+- **Base de datos:** [Sin especificar]
+- **Autenticación:** [Sin especificar]
+- **Otros:** [Sin especificar]
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## 📂 Estructura del Proyecto
+```
+/magic-marketplace
+├── frontend/  # Aplicación del lado del cliente
+├── docs/      # Documentación del proyecto
+└── README.md  # Este archivo
+```
 
-## Build
+## 🚀 Instalación y Ejecución
+1. Clonar el repositorio:
+   ```bash
+   git clone git@github.com:Sandra13988/Devathon-Slytherin-Front.git
+   ```
+2. Instalar dependencias:
+   ```bash
+   [Sin especificar]
+   ```
+3. Ejecutar el servidor:
+   ```bash
+   [Sin especificar]
+   ```
+4. Ejecutar el frontend:
+   ```bash
+   [Sin especificar]
+   ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🏆 Contribuidores
 
-## Running unit tests
+**Frontend:**
+- wjmmk
+- ZarakiLancelot
+- puriihuaman
+- Sandra13988
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+**Backend:**
+- jamarbo
+- angcamdes
+- raydberg
+- Temeriamos
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
