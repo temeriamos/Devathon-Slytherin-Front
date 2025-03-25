@@ -7,7 +7,9 @@ Crear un marketplace donde los usuarios puedan listar y comprar objetos mágicos
 - Los usuarios pueden listar objetos a la venta con descripción y precio.
 - Los objetos pueden ser comprados con monedas mágicas (galeones, sickles, knuts).
 - Algunos objetos tienen efectos especiales (desaparecen si no se venden rápido).
+
 - Los usuarios pueden administrar su inventario de objetos (carrito).
+
 
 ## 📌 Devathon 9na Edición
 - **Grupo:** Slytherin
