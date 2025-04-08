@@ -34,4 +34,4 @@ jobs:
 
     - name: Deploy to remote server
       run: |
-        rsync -avz --delete dist/devathon-slytherin-front/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:~/Devathon-Slytherin-Front/
+        rsync -avz --delete dist/devathon-slytherin-front/browser/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:~/Devathon-Slytherin-Front/
