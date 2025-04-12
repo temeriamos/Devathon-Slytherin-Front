@@ -27,19 +27,25 @@
     </section>
 
     <section class="flex flex-wrap justify-center gap-6 mt-6 w-full px-4">
-        @for (item of [{}, {}, {}]; track $index) {
+        @for (item of magicObjects; track $index) {
         <div class="relative w-72 h-[470px] bg-[#1a1a1a] rounded-lg shadow-lg
          text-white overflow-hidden hover:shadow-yellow-500/50 transition-shadow duration-300"
             style="background-image: url('assets/img/border-card.png'); background-size: cover; background-position: center;">
             <div class="flex flex-col items-center p-4 h-full gap-2">
 
-                <img src="https://i.imgur.com/JKV3oLd.jpeg" alt="Objeto mágico"
+                <img src="{{item.url_image}}" alt="Objeto mágico"
                     class="w-70 h-[120px] object-cover rounded-md shadow-md mt-[100px]" />
-                <h3 class="text-lg font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">Varita de Saúco</h3>
+                <h3 class="text-lg font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">
+                    {{item.name.length > 20 ?
+                    (item.name.slice(0, 20).trim() + '...') : item.name.trim()}}
+                </h3>
 
 
-                <p class="text-sm px-2 text-center">Una varita legendaria capaz de canalizar magia ancestral.
-                    Limitada.</p>
+                <div class="h-[45px] flex items-center justify-center gap-2 w-full text-center">
+                    <p class="text-sm px-2 text-center">{{item.short_description.length > 50 ?
+                        (item.short_description.slice(0, 50).trim() + '...') : item.short_description.trim()}}
+                    </p>
+                </div>
 
                 <div class="flex justify-between w-full  px-6 mt-0">
                     <button
@@ -48,19 +54,32 @@
                         class="bg-yellow-500 text-black rounded px-3 py-1 text-xs hover:bg-yellow-600">Agregar</button>
                 </div>
 
-                <div class="text-xs mt-1">💰 Precio: 50 Galeones</div>
-                <div class="mb-4 text-xs font-semibold flex flex-col items-center gap-1">
-                    RAREZA
-                    <div class="w-4 h-4 bg-blue-600 rounded-full inline-block ml-1"></div>
+                <div class="text-xs mt-1 flex  items-center justify-center gap-2 w-[80%] text-center">
+                    <span class="text-yellow-500 font-semibold">🟤Knuts: {{item.price_knut}}</span>
+                    <span class="text-yellow-500 font-semibold">⚪Sickles: {{item.price_sickle}}</span>
+                    <span class="text-yellow-500 font-semibold">🟡Galeones: {{item.price_galeon}} </span>
                 </div>
+                <div
+                    class="mb-4 text-sm font-semibold flex flex-col items-center gap-1 bg-[#2e2e2ed9] rounded-md px-3 py-2  w-[100px] shadow-inner border border-lime-50">
+                    <span class="flex items-center gap-1">
+                        <ng-container [ngSwitch]="item.rarity.name">
+                            <span *ngSwitchCase="'Común'">🔹</span>
+                            <span *ngSwitchCase="'Épico'">🔮</span>
+                            <span *ngSwitchCase="'Legendario'">🌟</span>
+                        </ng-container>
+                        <span>{{ item.rarity.name }}</span>
+                    </span>
+                </div>
+
             </div>
         </div>
 
         }
     </section>
+    @if (!loading) {
     <div class="flex justify-center my-6 px-4">
         <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
-            <a href="#"
+            <a (click)="goToPage(currentPage - 1)"
                 class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                 <span class="sr-only">Previous</span>
                 <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
@@ -69,22 +88,18 @@
                         clip-rule="evenodd" />
                 </svg>
             </a>
-            <!-- Current: "z-10 bg-indigo-600 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600", Default: "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0" -->
-            <a href="#" aria-current="page"
-                class="relative z-10 inline-flex items-center bg-slate-800 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">1</a>
-            <a href="#"
-                class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">2</a>
-            <a href="#"
-                class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">3</a>
-            <span
-                class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-gray-300 ring-inset focus:outline-offset-0">...</span>
-            <a href="#"
-                class="relative hidden items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0 md:inline-flex">8</a>
-            <a href="#"
-                class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">9</a>
-            <a href="#"
-                class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">10</a>
-            <a href="#"
+            @for (page of totalPagesArray; track $index) {
+            <button (click)="goToPage(page)" class="cursor-pointer relative inline-flex items-center px-4 py-2 text-sm font-semibold text-white
+                            ring-1 ring-gray-300 ring-inset hover:bg-yellow-600 focus:z-20 transition-colors duration-200
+                            rounded-md" [ngClass]="{
+                            'bg-yellow-600 text-black': currentPage === page,
+                            'bg-[#2e2e2ed9]': currentPage !== page
+                            }">
+                {{ page }}
+            </button>
+            }
+
+            <a (click)="goToPage(currentPage + 1)"
                 class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                 <span class="sr-only">Next</span>
                 <svg class="size-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
@@ -95,4 +110,19 @@
             </a>
         </nav>
     </div>
+    }
 </div>
+
+
+@if (loading) {
+<div class="fixed inset-0 z-40 flex items-center justify-center bg-[#0b0b0bcc] backdrop-blur-sm">
+    <div class="relative p-4 rounded-2xl shadow-xl animate-pulse-slow 
+              border-4 border-green-600/40 bg-gradient-to-b from-[#1a1a1acc] to-[#0e0e0ecc]">
+
+        <div class="absolute inset-0 rounded-2xl border-2 border-green-400 animate-border-glow"></div>
+
+        <img src="assets/img/img-loading.png" alt="Cargando..."
+            class="w-60 h-60 object-contain rounded-md shadow-inner animate-float" />
+    </div>
+</div>
+}
