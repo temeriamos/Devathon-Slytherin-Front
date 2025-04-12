@@ -3,7 +3,7 @@ import { NavbarComponent } from "../../shared/components/navbar/navbar.component
 import { SliderComponent } from "./components/slider/slider.component";
 import { UserService } from 'src/app/services/user.service';
 import { HttpClientModule } from '@angular/common/http';
-import { environment } from '@environments/environment.development ';
+
 
 @Component({
   selector: 'app-home-page',
