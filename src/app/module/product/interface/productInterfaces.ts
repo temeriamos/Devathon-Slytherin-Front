@@ -22,3 +22,8 @@ export interface Category {
   id: number;
   name: string;
 }
+
+export interface CategoryMagicObject {
+  id: number;
+  name: string;
+}
