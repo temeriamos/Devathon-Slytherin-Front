@@ -3,6 +3,7 @@ import { NavbarComponent } from "../../shared/components/navbar/navbar.component
 import { SliderComponent } from "./components/slider/slider.component";
 import { UserService } from 'src/app/services/user.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MagicObjectService } from 'src/app/services/magic-object.service';
 
 
 @Component({
@@ -15,7 +16,9 @@ import { HttpClientModule } from '@angular/common/http';
 export class HomePageComponent implements OnInit {
 
 
-  constructor(private userService : UserService){
+  constructor(
+    private userService : UserService,
+    private magicObjectService: MagicObjectService){
 
   }
 
@@ -28,6 +31,11 @@ export class HomePageComponent implements OnInit {
       error: (err: any) => {
         console.error('❌ Error en la conexión:', err);
       }
+    });
+
+    this.magicObjectService.getAllMagicObj(1, 10).subscribe({
+      next: (data) => console.log('Objetos mágicos:', data),
+      error: (err) => console.error('Error al obtener objetos', err)
     });
   }
 }
