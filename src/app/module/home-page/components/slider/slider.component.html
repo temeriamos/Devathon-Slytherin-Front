@@ -1,0 +1,32 @@
+<div class="relative w-full max-w-3xl mx-auto">
+
+  <img src="assets/img/marco.png" class="absolute inset-0 w-full h-auto z-40 object-cover" />
+
+  <!-- Slider -->
+  <div class="relative overflow-hidden rounded-2xl shadow-lg z-20">
+    <div
+      class="flex transition-transform duration-500"
+      [style.transform]="'translateX(-' + currentIndex * 100 + '%)'"
+    >
+      <div *ngFor="let img of images" class="w-full flex-shrink-0">
+        <img [src]="img" class="w-full  h-[27rem] object-cover mt-4" />
+      </div>
+    </div>
+
+
+  </div>
+  <button
+  (click)="prev()"
+  class="absolute left-[-5rem] top-1/2 transform -translate-y-1/2  text-white text-4xl p-2 rounded-full z-30 cursor-pointer"
+>
+  ‹
+</button>
+
+
+<button
+  (click)="next()"
+  class="absolute right-[-5rem] top-1/2 transform -translate-y-1/2  text-white text-4xl p-2 rounded-full z-30 cursor-pointer"
+>
+  ›
+</button>
+</div>
