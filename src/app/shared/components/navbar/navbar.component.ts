@@ -12,6 +12,13 @@ import { UserService } from 'src/app/services/user.service';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent implements OnInit{
+
+  isMenuOpen = false;
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
   user : User = {
     id: 1,
     name: 'Visitante',

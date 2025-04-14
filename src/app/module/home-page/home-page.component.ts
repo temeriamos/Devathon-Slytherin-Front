@@ -4,12 +4,13 @@ import { SliderComponent } from "./components/slider/slider.component";
 import { UserService } from 'src/app/services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MagicObjectService } from 'src/app/services/magic-object.service';
+import { FooterComponent } from 'src/app/shared/components/footer/footer.component';
 
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [NavbarComponent, SliderComponent,HttpClientModule],
+  imports: [NavbarComponent, SliderComponent,HttpClientModule, FooterComponent],
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })

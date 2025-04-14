@@ -2,13 +2,13 @@
     background-size: cover; background-position: center; background-repeat: no-repeat;">
     <app-navbar />
 
-    <div class="relative py-4">
+    <div class="relative py-12">
         <h2 class="text-center font-bold text-3xl text-white">Bienvenido a Slytherin </h2>
 
 
     </div>
 
-<slider></slider>
+    <slider></slider>
     <h2 class="text-center font-bold text-3xl text-white mt-12 py-6">Productos Destacado</h2>
     <section class="flex flex-wrap justify-center gap-6 mt-6 w-full px-4">
         @for (item of [{}, {}, {}]; track $index) {
@@ -41,5 +41,6 @@
         </div>
         }
     </section>
+    <app-footer></app-footer>
 
 </div>
