@@ -32,6 +32,10 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+    - name: Add server to known_hosts ✅
+      run: |
+        ssh-keyscan -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
     - name: Deploy to remote server
       run: |
         rsync -avz --delete dist/devathon-slytherin-front/browser/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:~/Devathon-Slytherin-Front/
