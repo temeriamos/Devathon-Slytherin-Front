@@ -6,12 +6,11 @@ import {
   MagicObject,
 } from '../../interface/productInterfaces';
 import { CommonModule } from '@angular/common';
-import { LoadingComponent } from '../../components/loading/loading.component';
 
 @Component({
   selector: 'app-product-page',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, LoadingComponent],
+  imports: [NavbarComponent, CommonModule],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.css',
 })
@@ -64,7 +63,7 @@ export class ProductPageComponent {
       }
     );
   }
-  getMagicObjectByIdCategory(category: string) {
+  getMagicObjectByIdCategory(category: any) {
     if (category === 'all') {
       this.getMagicObjects(1, 4);
       return;

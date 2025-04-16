@@ -1,4 +1,5 @@
-<div class="fixed inset-0 z-40 flex items-center justify-center bg-[#0b0b0bcc] backdrop-blur-sm">
+<div *ngIf="isLoading$  | async"
+    class="fixed inset-0 z-40 flex items-center justify-center bg-[#0b0b0bcc] backdrop-blur-sm">
     <div class="relative p-4 rounded-2xl shadow-xl animate-pulse-slow 
               border-4 border-green-600/40 bg-gradient-to-b from-[#1a1a1acc] to-[#0e0e0ecc]">
 

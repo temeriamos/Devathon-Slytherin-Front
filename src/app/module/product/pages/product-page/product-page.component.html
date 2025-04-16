@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-cover bg-center bg-no-repeat py-3" style="background-image: url('assets/img/fondo.png');
+<div class="min-h-screen bg-cover bg-center bg-no-repeat py-0" style="background-image: url('assets/img/fondo.png');
     background-size: cover; background-position: center; background-repeat: no-repeat;">
     <app-navbar />
 
@@ -16,7 +16,7 @@
         @for (item of listCategoryMagicObjects; track $index) {
         <div class="bg-[#2d2d2d] border border-orange-400 px-4 py-2 rounded-2xl
          text-white text-sm cursor-pointer hover:bg-yellow-900 transition flex items-center gap-2"
-            (click)="getMagicObjectByIdCategory(item.name)">
+            (click)="getMagicObjectByIdCategory(item.id)">
             <ng-container [ngSwitch]="item.name">
                 <span *ngSwitchCase="'Artefáctos Mágicos'">🪄</span>
                 <span *ngSwitchCase="'Ingredientes para pociones'">🧪</span>
@@ -43,7 +43,7 @@
 
                 <img src="{{item.url_image}}" alt="Objeto mágico"
                     class="w-70 h-[120px] object-cover rounded-md shadow-md mt-[100px]" />
-                <h3 class="text-lg font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">
+                <h3 class="text-sm font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">
                     {{item.name.length > 20 ?
                     (item.name.slice(0, 20).trim() + '...') : item.name.trim()}}
                 </h3>
@@ -62,10 +62,10 @@
                         class="bg-yellow-500 text-black rounded px-3 py-1 text-xs hover:bg-yellow-600">Agregar</button>
                 </div>
 
-                <div class="text-xs mt-1 flex  items-center justify-center gap-2 w-[80%] text-center">
-                    <span class="text-yellow-500 font-semibold">🟤Knuts: {{item.price_knut}}</span>
-                    <span class="text-yellow-500 font-semibold">⚪Sickles: {{item.price_sickle}}</span>
-                    <span class="text-yellow-500 font-semibold">🟡Galeones: {{item.price_galeon}} </span>
+                <div class="text-xs mt-1 flex  items-center justify-center gap-2 w-[90%] text-center">
+                    <span class="text-yellow-500 ">🟤Knuts: {{item.price_knut}}</span>
+                    <span class="text-yellow-500 ">⚪Sickles: {{item.price_sickle}}</span>
+                    <span class="text-yellow-500 ">🟡Galeones: {{item.price_galeon}} </span>
                 </div>
                 <div class="mb-4 text-sm font-semibold flex flex-col items-center
                 gap-1 rounded-md px-2    shadow-inner
@@ -125,9 +125,6 @@
 </div>
 
 
-@if (loading) {
-<app-loading />
-}
 
 @if(stateModal) {
 <div class="relative z-10 " aria-labelledby="modal-title" role="dialog" aria-modal="true">

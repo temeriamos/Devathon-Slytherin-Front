@@ -7,19 +7,18 @@
     </div>
 
     <!-- Nav centrado (columna del medio) -->
-    <div class="flex justify-center gap-6"
-    [ngClass]="{
+    <div class="flex justify-center gap-6" [ngClass]="{
       'block absolute top-full w-full p-4 md:static md:w-auto md:p-0': isMenuOpen,
       'hidden md:flex': !isMenuOpen
     }">
       <a routerLink="/home" routerLinkActive="text-gold" [routerLinkActiveOptions]="{ exact: true }"
-         class="font-medium hover:text-gold transition-colors duration-200">Home</a>
+        class="font-medium hover:text-gold transition-colors duration-200">Home</a>
       <a routerLink="/product" routerLinkActive="text-gold"
-         class="font-medium hover:text-gold transition-colors duration-200">Products</a>
+        class="font-medium hover:text-gold transition-colors duration-200">Products</a>
       <a routerLink="/profile" routerLinkActive="text-gold" [routerLinkActiveOptions]="{ exact: true }"
-         class="font-medium hover:text-gold transition-colors duration-200">Profile</a>
+        class="font-medium hover:text-gold transition-colors duration-200">Profile</a>
       <a routerLink="/cart" routerLinkActive="text-gold" [routerLinkActiveOptions]="{ exact: true }"
-         class="font-medium relative hover:text-gold transition-colors duration-200">
+        class="font-medium relative hover:text-gold transition-colors duration-200">
         Cart
         <span class="absolute -top-1.5 -right-3 text-xs bg-red-500 text-white rounded-full px-1">0</span>
       </a>
