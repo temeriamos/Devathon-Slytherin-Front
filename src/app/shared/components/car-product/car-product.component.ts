@@ -32,11 +32,18 @@ export class CarProductComponent {
     this.ProductService.removeItem(id);
   }
   newSale() {
+    const dataUser = localStorage.getItem('dataUser');
+    if (!dataUser) {
+      this.respSale = 'Por favor, seleccione un usuario';
+      return;
+    }
+
+    const user = JSON.parse(dataUser);
     const bodySale = {
-      user_id: 4,
-      total_galeon: 100,
-      total_sickle: 100,
-      total_knut: 100,
+      user_id: user.id,
+      total_galeon: user.price_galeon,
+      total_sickle: user.price_sickle,
+      total_knut: user.price_knut,
       items: this.cart.map((item) => {
         return {
           object_id: item.id,
@@ -52,6 +59,7 @@ export class CarProductComponent {
         setTimeout(() => {
           this.ProductService.clearCart();
           this.loaderService.hideCarModal();
+          this.respSale = '';
         }, 2000);
       },
       (error) => {

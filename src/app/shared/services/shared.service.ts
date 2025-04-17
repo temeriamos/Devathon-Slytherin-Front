@@ -14,4 +14,9 @@ export class SharedService {
       responseType: 'text',
     });
   }
+  registerUser(bodyUser: any): Observable<string> {
+    return this.http.post(`${baseUrl}/user/`, bodyUser, {
+      responseType: 'text',
+    });
+  }
 }
