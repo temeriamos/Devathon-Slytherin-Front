@@ -46,11 +46,23 @@
             <div class="w-full flex gap-2 items-center justify-end px-6 py-4 border-t border-green-700 bg-[#111827]">
                 <button (click)="closeCarModal() "
                     class="bg-[#1f2937] hover:bg-slate-600 text-green-200 px-4 py-2 rounded-lg border border-green-600 transition">Cerrar</button>
-                <button
+                <button (click)="newSale()"
                     class="bg-green-600 hover:bg-green-500 text-slate-900 font-bold px-6 py-2 rounded-lg transition shadow-lg">Ir
                     a pagar</button>
             </div>
+            @if(respSale){
 
+            <div class="w-full m-auto">
+                <p class="text-center text-green-400 font-bold text-lg p-2 bg-[#111827] "
+                    *ngIf="respSale !== null && respSale !== undefined && respSale !== ''"
+                    [ngClass]="{'text-red-500': respSale === 'Error: User does not have enough balance'}">
+                    {{ respSale === 'Error: User does not have enough balance' ? 'No tienes saldo suficiente' : respSale
+                    }}
+
+                </p>
+            </div>
+            }
         </div>
     </div>
+
 </div>
