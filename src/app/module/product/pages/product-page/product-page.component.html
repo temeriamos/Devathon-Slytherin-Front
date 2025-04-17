@@ -60,8 +60,8 @@
                 <div class="flex justify-between w-full  px-6 mt-0">
                     <button (click)="stateModal = true" (click)="getDetailProduct(item.id)"
                         class="bg-yellow-500 text-black rounded px-3 py-0 text-xs hover:bg-yellow-600">Detalles</button>
-                    <button
-                        class="bg-yellow-500 text-black rounded px-3 py-1 text-xs hover:bg-yellow-600">Agregar</button>
+                    <button class="bg-yellow-500 text-black rounded px-3 py-1 text-xs hover:bg-yellow-600"
+                        (click)="addToCart(item)">Agregar</button>
                 </div>
 
                 <div class="text-xs mt-1 flex  items-center justify-center gap-1 w-[85%] text-center">
@@ -170,3 +170,24 @@
     </div>
 </div>
 }
+@if (visible) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity">
+    <div
+        class="relative flex flex-col items-center justify-center rounded-xl bg-[#1a1a1a] p-6 text-white shadow-xl border-2 border-green-800 animate-fade-in-up">
+        <div class="relative mb-4">
+            <img src="{{imgProducSelected}}" alt="Objeto mágico"
+                class="absolute left-1/2 top-0 size-20 -translate-x-1/2 animate-fly-into-chest rounded-full" />
+            <img src="../../../../../assets/img/Baul.png" alt="Baúl de Slytherin" class="size-32" />
+        </div>
+
+        <h2 class="text-xl font-bold text-slytherin-green">¡Hechizo exitoso!</h2>
+        <p class="text-sm mt-2 text-center text-gray-300">
+            Tu objeto ha sido enviado al baúl de Slytherin.
+        </p>
+
+        <button class="mt-4 rounded-md bg-slytherin-green px-4 py-2 text-sm font-semibold text-black hover:bg-green-400"
+            (click)="close()">
+            Cerrar
+        </button>
+    </div>
+</div>}

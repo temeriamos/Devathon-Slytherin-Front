@@ -1,0 +1,56 @@
+<div *ngIf="viewCarModal$  | async" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+    <div class="fixed inset-0 bg-black/70 backdrop-blur-sm" aria-hidden="true"></div>
+
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div
+            class="relative w-full max-w-[500px] transform overflow-hidden rounded-2xl border-2 border-orange-400  bg-[#1c1c1c] text-white shadow-2xl ring-1 ring-green-600 ring-opacity-50">
+
+            <div class="flex items-center justify-between px-6 py-4 border-b border-green-700 bg-[#111827]">
+                <div class="flex items-center gap-3">
+                    <img src="../../../../assets/img/slitherin-logo.png" class="w-10 h-10" />
+                    <h2 class="text-2xl font-bold text-green-400 tracking-widest">Tu Carrito Slytherin</h2>
+                </div>
+                <button class="text-green-300 hover:text-green-200 text-lg font-semibold"
+                    (click)="closeCarModal() ">✕</button>
+            </div>
+
+            <div class="px-6 py-4 max-h-[450px] overflow-y-auto space-y-4">
+                <!-- Producto x-->
+
+                @for (item of cart; track $index) {
+
+                <div class="flex items-center gap-4 p-4 rounded-lg bg-[#27272a] border border-green-600 shadow-inner">
+                    <img src="{{item.url_image}}" alt="item" class="w-14 h-14 rounded shadow" />
+                    <div class="flex-1">
+                        <h4 class="text-sm font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">
+                            {{item.name}} </h4>
+                        <p class="text-gray-400 text-sm">🟤Knuts: {{item.price_knut}} , ⚪Sickles: {{item.price_sickle}},
+                            🟡Galeones: {{item.price_galeon}} </p>
+                    </div>
+                    <div>
+                        <button (click)="removeItem(item.id)"
+                            class=" hover:bg-zinc-700 text-slate-900 rounded-lg transition shadow-lg p-2 ">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="25px" viewBox="0 -960 960 960" width="25px"
+                                fill="#EA3323">
+                                <path
+                                    d="M267.33-120q-27.5 0-47.08-19.58-19.58-19.59-19.58-47.09V-740H160v-66.67h192V-840h256v33.33h192V-740h-40.67v553.33q0 27-19.83 46.84Q719.67-120 692.67-120H267.33Zm425.34-620H267.33v553.33h425.34V-740Zm-328 469.33h66.66v-386h-66.66v386Zm164 0h66.66v-386h-66.66v386ZM267.33-740v553.33V-740Z" />
+                            </svg>
+
+                        </button>
+                    </div>
+                </div>
+                }
+            </div>
+
+            <div class="w-full flex gap-2 items-center justify-end px-6 py-4 border-t border-green-700 bg-[#111827]">
+                <button (click)="closeCarModal() "
+                    class="bg-[#1f2937] hover:bg-slate-600 text-green-200 px-4 py-2 rounded-lg border border-green-600 transition">Cerrar</button>
+                <button
+                    class="bg-green-600 hover:bg-green-500 text-slate-900 font-bold px-6 py-2 rounded-lg transition shadow-lg">Ir
+                    a pagar</button>
+            </div>
+
+        </div>
+    </div>
+</div>

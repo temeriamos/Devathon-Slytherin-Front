@@ -17,10 +17,11 @@
         class="font-medium hover:text-gold transition-colors duration-200">Products</a>
       <a routerLink="/profile" routerLinkActive="text-gold" [routerLinkActiveOptions]="{ exact: true }"
         class="font-medium hover:text-gold transition-colors duration-200">Profile</a>
-      <a routerLink="/cart" routerLinkActive="text-gold" [routerLinkActiveOptions]="{ exact: true }"
-        class="font-medium relative hover:text-gold transition-colors duration-200">
+      <a routerLinkActive="text-gold" [routerLinkActiveOptions]="{ exact: true }" (click)="viewCarModal()"
+        class="font-medium relative hover:text-gold transition-colors duration-200 cursor-pointer">
         Cart
-        <span class="absolute -top-1.5 -right-3 text-xs bg-red-500 text-white rounded-full px-1">0</span>
+        <span class="absolute -top-1.5 -right-3 text-xs bg-red-500 text-white rounded-full px-1">
+          {{cart.length}}</span>
       </a>
     </div>
 

@@ -25,6 +25,8 @@ export class ProductPageComponent {
   productDetail: MagicObject | null = null;
   stateModal = false;
   searchSubject = new Subject<string>();
+  visible = false;
+  imgProducSelected = '';
 
   constructor() {
     const currentPage = localStorage.getItem('currentPageProduct') || 0;
@@ -114,5 +116,13 @@ export class ProductPageComponent {
   searchMagicObjectByName(name: any) {
     const searchTerm = typeof name === 'string' ? name : name?.value || '';
     this.searchSubject.next(searchTerm);
+  }
+  addToCart(objetoMagico: MagicObject) {
+    this.imgProducSelected = objetoMagico.url_image;
+    this.ProductService.addToCart(objetoMagico);
+    this.visible = true;
+  }
+  close() {
+    this.visible = false;
   }
 }
