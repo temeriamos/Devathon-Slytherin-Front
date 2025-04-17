@@ -94,10 +94,7 @@ export class NavbarComponent implements OnInit {
   registerUser() {
     if (this.registroForm.valid) {
       const formData = this.registroForm.value;
-      // inferius.keeper;
-      // tenebrae.wanderer;
-      // obscura.lux;
-      // slythr.hexborn;
+
       const bodyUser = {
         name: formData.nickname,
         price_galeon: formData.price_galleon,

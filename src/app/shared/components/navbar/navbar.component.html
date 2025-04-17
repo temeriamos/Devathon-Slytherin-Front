@@ -24,32 +24,33 @@
           {{cart.length}}</span>
       </a>
     </div>
-
     <!-- Monedas + usuario (derecha) -->
-    <div class="flex items-center justify-end gap-4 text-sm">
+    <div class="flex items-center justify-end gap-2 text-xs flex-nowrap ml-auto">
       <!-- Monedas -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2 shrink-0">
         <div class="flex items-center gap-1">
-          <span class="px-1">{{user.price_galeon}}</span>
-          <img src="../../../../assets/img/galleon.png" alt="Galleon" class="w-5 h-5" />
+          <span class="truncate max-w-[40px]">{{ user.price_galeon }}</span>
+          <img src="../../../../assets/img/galleon.png" alt="Galleon" class="w-4 h-4" />
         </div>
         <div class="flex items-center gap-1">
-          <span class="px-1">{{user.price_sickle}}</span>
-          <img src="../../../../assets/img/icon-sickle.png" alt="Sickle" class="w-5 h-5" />
+          <span class="truncate max-w-[40px]">{{ user.price_sickle }}</span>
+          <img src="../../../../assets/img/icon-sickle.png" alt="Sickle" class="w-4 h-4" />
         </div>
         <div class="flex items-center gap-1">
-          <span class="px-1">{{user.price_knut}}</span>
-          <img src="../../../../assets/img/icon-knut.png" alt="Knut" class="w-5 h-5" />
+          <span class="truncate max-w-[40px]">{{ user.price_knut }}</span>
+          <img src="../../../../assets/img/icon-knut.png" alt="Knut" class="w-4 h-4" />
         </div>
       </div>
 
       <!-- Usuario -->
-      <div class="flex items-center gap-2 cursor-pointer" (click)="modalOpenLogin = true">
-        <span>{{user.name}}</span>
-        <img src="{{user.image_user || '../../../../assets/img/foto_user_visitante.png'}}" alt="User"
-          class="w-8 h-8 rounded-full bg-white" />
+      <div class="flex items-center gap-1 cursor-pointer shrink-0" (click)="modalOpenLogin = true">
+        <span class="truncate max-w-[70px]">{{ user.name }}</span>
+        <img [src]="user.image_user || '../../../../assets/img/foto_user_visitante.png'" alt="User"
+          class="w-6 h-6 rounded-full bg-white" />
       </div>
     </div>
+
+
 
   </div>
 </div>
