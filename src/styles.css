@@ -1,12 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap");
 
 /* --------------------fonts ----------- */
 @font-face {
-  font-family: 'Unzialish';
-  src: url('assets/fonts/UnZialish.ttf') format('truetype');
+  font-family: "Unzialish";
+  src: url("assets/fonts/UnZialish.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -15,5 +15,5 @@
 html,
 body {
   height: 100%;
-  font-family: 'Uncial Antiqua', cursive;
+  font-family: "Uncial Antiqua", cursive;
 }

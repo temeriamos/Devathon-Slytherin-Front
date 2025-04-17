@@ -6,12 +6,12 @@ import {
   MagicObject,
 } from '../../interface/productInterfaces';
 import { CommonModule } from '@angular/common';
-import { LoadingComponent } from '../../components/loading/loading.component';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-product-page',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, LoadingComponent],
+  imports: [NavbarComponent, CommonModule],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.css',
 })
@@ -24,6 +24,10 @@ export class ProductPageComponent {
   listCategoryMagicObjects: CategoryMagicObject[] = [];
   productDetail: MagicObject | null = null;
   stateModal = false;
+  searchSubject = new Subject<string>();
+  visible = false;
+  imgProducSelected = '';
+
   constructor() {
     const currentPage = localStorage.getItem('currentPageProduct') || 0;
     if (currentPage) {
@@ -35,15 +39,30 @@ export class ProductPageComponent {
       this.loading = false;
     }, 1000);
   }
+  ngOnInit() {
+    this.searchSubject.pipe(debounceTime(1000)).subscribe((searchTerm) => {
+      if (!searchTerm.trim()) {
+        this.getMagicObjects(1, 4);
+        return;
+      }
 
+      this.currentPage = 0;
+      localStorage.setItem('currentPageProduct', '0');
+      localStorage.removeItem('categoryProductFilter');
+      localStorage.setItem('searchProduct', searchTerm);
+
+      this.ProductService.searchMagicObjectByName(searchTerm, '0').subscribe(
+        (data) => {
+          this.magicObjects = data.magic_objects;
+          this.setTotalPages(data.page);
+        }
+      );
+    });
+  }
   getMagicObjects(page: number, size: number) {
     this.ProductService.getMagicObjects(page, size).subscribe((data) => {
       this.magicObjects = data.magic_objects;
-
       this.setTotalPages(data.page);
-      setInterval(() => {
-        this.loading = false;
-      }, 1000);
     });
   }
   setTotalPages(count: number) {
@@ -52,7 +71,14 @@ export class ProductPageComponent {
   goToPage(page: number) {
     if (page < 0) return;
     if (page > this.totalPagesArray.length - 1) return;
-    this.getMagicObjects(page, 4);
+    const categoryProductFilter = localStorage.getItem(
+      'categoryProductFilter'
+    ) as string;
+    if (categoryProductFilter) {
+      this.getMagicObjectByIdCategory(categoryProductFilter, page.toString());
+    } else {
+      this.getMagicObjects(page, 4);
+    }
     this.currentPage = page;
     localStorage.setItem('currentPageProduct', page.toString());
   }
@@ -64,27 +90,39 @@ export class ProductPageComponent {
       }
     );
   }
-  getMagicObjectByIdCategory(category: string) {
+  getMagicObjectByIdCategory(category: any, page?: string) {
+    this.currentPage = 0;
+    localStorage.setItem('currentPageProduct', '0');
+    localStorage.setItem('categoryProductFilter', category);
+
     if (category === 'all') {
+      localStorage.removeItem('categoryProductFilter');
       this.getMagicObjects(1, 4);
       return;
     }
-    this.ProductService.getMagicObjectByIdCategory(category).subscribe(
-      (data) => {
-        this.totalPagesArray = Array.from(
-          { length: data.size },
-          (_, i) => i + 1
-        );
-        this.magicObjects = data.magic_objects;
-        this.setTotalPages(data.page);
-        this.currentPage = 1;
-        localStorage.setItem('currentPageProduct', '1');
-      }
-    );
+    this.ProductService.getMagicObjectByIdCategory(
+      category,
+      page || '0'
+    ).subscribe((data) => {
+      this.magicObjects = data.magic_objects;
+      this.setTotalPages(data.page);
+    });
   }
   getDetailProduct(id: number) {
     this.productDetail = this.magicObjects.find(
       (magicObject) => magicObject.id === id
     ) as MagicObject;
+  }
+  searchMagicObjectByName(name: any) {
+    const searchTerm = typeof name === 'string' ? name : name?.value || '';
+    this.searchSubject.next(searchTerm);
+  }
+  addToCart(objetoMagico: MagicObject) {
+    this.imgProducSelected = objetoMagico.url_image;
+    this.ProductService.addToCart(objetoMagico);
+    this.visible = true;
+  }
+  close() {
+    this.visible = false;
   }
 }

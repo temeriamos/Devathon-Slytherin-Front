@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { baseUrl } from '../../../../app/environment/environment';
 import {
   CategoryMagicObject,
   DataMagicObject,
+  MagicObject,
 } from '../interface/productInterfaces';
 
 @Injectable({
@@ -12,6 +13,10 @@ import {
 })
 export class ProductService {
   http = inject(HttpClient);
+  private cartKey = 'cart';
+  private cartChanged = new BehaviorSubject<MagicObject[]>(this.getCart());
+  cart$ = this.cartChanged.asObservable();
+
   constructor() {}
 
   getMagicObjects(page: number, size: number): Observable<DataMagicObject> {
@@ -23,9 +28,43 @@ export class ProductService {
     return this.http.get<CategoryMagicObject>(`${baseUrl}/category/`);
   }
 
-  getMagicObjectByIdCategory(idCategoria: string): Observable<DataMagicObject> {
+  getMagicObjectByIdCategory(
+    idCategoria: string,
+    page?: string
+  ): Observable<DataMagicObject> {
     return this.http.get<DataMagicObject>(
-      `${baseUrl}/magicobject?category=${idCategoria}&page=0&size=4`
+      `${baseUrl}/magicobject/?category=${idCategoria}&page=${page}&size=4`
     );
+  }
+  searchMagicObjectByName(
+    name: string,
+    page: string
+  ): Observable<DataMagicObject> {
+    return this.http.get<DataMagicObject>(
+      `${baseUrl}/magicobject/search?query=${name}&page=${page}&size=4`
+    );
+  }
+  getCart(): any[] {
+    if (typeof window !== 'undefined' && localStorage.getItem(this.cartKey)) {
+      return JSON.parse(localStorage.getItem(this.cartKey) || '[]');
+    }
+    return [];
+  }
+
+  addToCart(magicObject: MagicObject) {
+    const cart = this.getCart();
+    const existingItem = cart.find((item) => item.id === magicObject.id);
+
+    if (!existingItem) {
+      cart.push({ ...magicObject });
+    }
+
+    localStorage.setItem(this.cartKey, JSON.stringify(cart));
+    this.cartChanged.next(cart);
+  }
+  removeItem(id: number) {
+    const cart = this.getCart().filter((item) => item.id !== id);
+    localStorage.setItem(this.cartKey, JSON.stringify(cart));
+    this.cartChanged.next(cart);
   }
 }

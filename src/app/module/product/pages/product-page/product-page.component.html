@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-cover bg-center bg-no-repeat py-3" style="background-image: url('assets/img/fondo.png');
+<div class="min-h-screen bg-cover bg-center bg-no-repeat py-0" style="background-image: url('assets/img/fondo.png');
     background-size: cover; background-position: center; background-repeat: no-repeat;">
     <app-navbar />
 
@@ -7,7 +7,9 @@
 
         <div class="relative flex justify-center items-center">
             <input type="text" placeholder="🔍 Buscar hechizos, pociones o artefactos..." class="bg-[#1e1b1b99] border border-yellow-500 text-white placeholder:text-yellow-200
-                 rounded-2xl px-6 py-2 w-full max-w-xl shadow-lg backdrop-blur-sm" />
+                 rounded-2xl px-6 py-2 w-full max-w-xl shadow-lg backdrop-blur-sm"
+                (input)="searchMagicObjectByName($event.target)" />
+            />
         </div>
 
     </div>
@@ -16,7 +18,7 @@
         @for (item of listCategoryMagicObjects; track $index) {
         <div class="bg-[#2d2d2d] border border-orange-400 px-4 py-2 rounded-2xl
          text-white text-sm cursor-pointer hover:bg-yellow-900 transition flex items-center gap-2"
-            (click)="getMagicObjectByIdCategory(item.name)">
+            (click)="getMagicObjectByIdCategory(item.id)">
             <ng-container [ngSwitch]="item.name">
                 <span *ngSwitchCase="'Artefáctos Mágicos'">🪄</span>
                 <span *ngSwitchCase="'Ingredientes para pociones'">🧪</span>
@@ -43,13 +45,13 @@
 
                 <img src="{{item.url_image}}" alt="Objeto mágico"
                     class="w-70 h-[120px] object-cover rounded-md shadow-md mt-[100px]" />
-                <h3 class="text-lg font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">
+                <h3 class="text-sm font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">
                     {{item.name.length > 20 ?
                     (item.name.slice(0, 20).trim() + '...') : item.name.trim()}}
                 </h3>
 
 
-                <div class="h-[45px] flex items-center justify-center gap-2 w-full text-center">
+                <div class="h-[45px] flex items-center justify-center gap-2 w-[85%] text-center">
                     <p class="text-sm px-2 text-center">{{item.short_description.length > 50 ?
                         (item.short_description.slice(0, 50).trim() + '...') : item.short_description.trim()}}
                     </p>
@@ -58,14 +60,14 @@
                 <div class="flex justify-between w-full  px-6 mt-0">
                     <button (click)="stateModal = true" (click)="getDetailProduct(item.id)"
                         class="bg-yellow-500 text-black rounded px-3 py-0 text-xs hover:bg-yellow-600">Detalles</button>
-                    <button
-                        class="bg-yellow-500 text-black rounded px-3 py-1 text-xs hover:bg-yellow-600">Agregar</button>
+                    <button class="bg-yellow-500 text-black rounded px-3 py-1 text-xs hover:bg-yellow-600"
+                        (click)="addToCart(item)">Agregar</button>
                 </div>
 
-                <div class="text-xs mt-1 flex  items-center justify-center gap-2 w-[80%] text-center">
-                    <span class="text-yellow-500 font-semibold">🟤Knuts: {{item.price_knut}}</span>
-                    <span class="text-yellow-500 font-semibold">⚪Sickles: {{item.price_sickle}}</span>
-                    <span class="text-yellow-500 font-semibold">🟡Galeones: {{item.price_galeon}} </span>
+                <div class="text-xs mt-1 flex  items-center justify-center gap-1 w-[85%] text-center">
+                    <span class="text-yellow-500 ">🟤Knuts: {{item.price_knut}}</span>
+                    <span class="text-yellow-500 ">⚪Sickles: {{item.price_sickle}}</span>
+                    <span class="text-yellow-500 ">🟡Galeones: {{item.price_galeon}} </span>
                 </div>
                 <div class="mb-4 text-sm font-semibold flex flex-col items-center
                 gap-1 rounded-md px-2    shadow-inner
@@ -87,7 +89,7 @@
 
         }
     </section>
-    @if (!loading) {
+    @if (!loading && magicObjects.length > 1) {
     <div class="flex justify-center my-6 px-4">
         <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
             <a (click)="goToPage(currentPage-1 )"
@@ -125,9 +127,6 @@
 </div>
 
 
-@if (loading) {
-<app-loading />
-}
 
 @if(stateModal) {
 <div class="relative z-10 " aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -171,3 +170,24 @@
     </div>
 </div>
 }
+@if (visible) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity">
+    <div
+        class="relative flex flex-col items-center justify-center rounded-xl bg-[#1a1a1a] p-6 text-white shadow-xl border-2 border-green-800 animate-fade-in-up">
+        <div class="relative mb-4">
+            <img src="{{imgProducSelected}}" alt="Objeto mágico"
+                class="absolute left-1/2 top-0 size-20 -translate-x-1/2 animate-fly-into-chest rounded-full" />
+            <img src="../../../../../assets/img/Baul.png" alt="Baúl de Slytherin" class="size-32" />
+        </div>
+
+        <h2 class="text-xl font-bold text-slytherin-green">¡Hechizo exitoso!</h2>
+        <p class="text-sm mt-2 text-center text-gray-300">
+            Tu objeto ha sido enviado al baúl de Slytherin.
+        </p>
+
+        <button class="mt-4 rounded-md bg-slytherin-green px-4 py-2 text-sm font-semibold text-black hover:bg-green-400"
+            (click)="close()">
+            Cerrar
+        </button>
+    </div>
+</div>}
