@@ -7,7 +7,9 @@
 
         <div class="relative flex justify-center items-center">
             <input type="text" placeholder="🔍 Buscar hechizos, pociones o artefactos..." class="bg-[#1e1b1b99] border border-yellow-500 text-white placeholder:text-yellow-200
-                 rounded-2xl px-6 py-2 w-full max-w-xl shadow-lg backdrop-blur-sm" />
+                 rounded-2xl px-6 py-2 w-full max-w-xl shadow-lg backdrop-blur-sm"
+                (input)="searchMagicObjectByName($event.target)" />
+            />
         </div>
 
     </div>
@@ -87,7 +89,7 @@
 
         }
     </section>
-    @if (!loading) {
+    @if (!loading && magicObjects.length > 1) {
     <div class="flex justify-center my-6 px-4">
         <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
             <a (click)="goToPage(currentPage-1 )"

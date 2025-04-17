@@ -6,6 +6,7 @@ import {
   MagicObject,
 } from '../../interface/productInterfaces';
 import { CommonModule } from '@angular/common';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-product-page',
@@ -23,6 +24,8 @@ export class ProductPageComponent {
   listCategoryMagicObjects: CategoryMagicObject[] = [];
   productDetail: MagicObject | null = null;
   stateModal = false;
+  searchSubject = new Subject<string>();
+
   constructor() {
     const currentPage = localStorage.getItem('currentPageProduct') || 0;
     if (currentPage) {
@@ -34,7 +37,26 @@ export class ProductPageComponent {
       this.loading = false;
     }, 1000);
   }
+  ngOnInit() {
+    this.searchSubject.pipe(debounceTime(1000)).subscribe((searchTerm) => {
+      if (!searchTerm.trim()) {
+        this.getMagicObjects(1, 4);
+        return;
+      }
 
+      this.currentPage = 0;
+      localStorage.setItem('currentPageProduct', '0');
+      localStorage.removeItem('categoryProductFilter');
+      localStorage.setItem('searchProduct', searchTerm);
+
+      this.ProductService.searchMagicObjectByName(searchTerm, '0').subscribe(
+        (data) => {
+          this.magicObjects = data.magic_objects;
+          this.setTotalPages(data.page);
+        }
+      );
+    });
+  }
   getMagicObjects(page: number, size: number) {
     this.ProductService.getMagicObjects(page, size).subscribe((data) => {
       this.magicObjects = data.magic_objects;
@@ -88,5 +110,9 @@ export class ProductPageComponent {
     this.productDetail = this.magicObjects.find(
       (magicObject) => magicObject.id === id
     ) as MagicObject;
+  }
+  searchMagicObjectByName(name: any) {
+    const searchTerm = typeof name === 'string' ? name : name?.value || '';
+    this.searchSubject.next(searchTerm);
   }
 }
