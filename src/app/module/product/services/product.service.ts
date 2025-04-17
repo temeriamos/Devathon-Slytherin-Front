@@ -23,9 +23,12 @@ export class ProductService {
     return this.http.get<CategoryMagicObject>(`${baseUrl}/category/`);
   }
 
-  getMagicObjectByIdCategory(idCategoria: string): Observable<DataMagicObject> {
+  getMagicObjectByIdCategory(
+    idCategoria: string,
+    page?: string
+  ): Observable<DataMagicObject> {
     return this.http.get<DataMagicObject>(
-      `${baseUrl}/magicobject?category=${idCategoria}&page=0&size=4`
+      `${baseUrl}/magicobject/?category=${idCategoria}&page=${page}&size=4`
     );
   }
 }

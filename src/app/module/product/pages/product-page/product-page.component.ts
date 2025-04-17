@@ -38,11 +38,7 @@ export class ProductPageComponent {
   getMagicObjects(page: number, size: number) {
     this.ProductService.getMagicObjects(page, size).subscribe((data) => {
       this.magicObjects = data.magic_objects;
-
       this.setTotalPages(data.page);
-      setInterval(() => {
-        this.loading = false;
-      }, 1000);
     });
   }
   setTotalPages(count: number) {
@@ -51,7 +47,14 @@ export class ProductPageComponent {
   goToPage(page: number) {
     if (page < 0) return;
     if (page > this.totalPagesArray.length - 1) return;
-    this.getMagicObjects(page, 4);
+    const categoryProductFilter = localStorage.getItem(
+      'categoryProductFilter'
+    ) as string;
+    if (categoryProductFilter) {
+      this.getMagicObjectByIdCategory(categoryProductFilter, page.toString());
+    } else {
+      this.getMagicObjects(page, 4);
+    }
     this.currentPage = page;
     localStorage.setItem('currentPageProduct', page.toString());
   }
@@ -63,23 +66,23 @@ export class ProductPageComponent {
       }
     );
   }
-  getMagicObjectByIdCategory(category: any) {
+  getMagicObjectByIdCategory(category: any, page?: string) {
+    this.currentPage = 0;
+    localStorage.setItem('currentPageProduct', '0');
+    localStorage.setItem('categoryProductFilter', category);
+
     if (category === 'all') {
+      localStorage.removeItem('categoryProductFilter');
       this.getMagicObjects(1, 4);
       return;
     }
-    this.ProductService.getMagicObjectByIdCategory(category).subscribe(
-      (data) => {
-        this.totalPagesArray = Array.from(
-          { length: data.size },
-          (_, i) => i + 1
-        );
-        this.magicObjects = data.magic_objects;
-        this.setTotalPages(data.page);
-        this.currentPage = 1;
-        localStorage.setItem('currentPageProduct', '1');
-      }
-    );
+    this.ProductService.getMagicObjectByIdCategory(
+      category,
+      page || '0'
+    ).subscribe((data) => {
+      this.magicObjects = data.magic_objects;
+      this.setTotalPages(data.page);
+    });
   }
   getDetailProduct(id: number) {
     this.productDetail = this.magicObjects.find(
