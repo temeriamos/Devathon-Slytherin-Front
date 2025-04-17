@@ -45,8 +45,13 @@ export class ProductService {
     );
   }
   getCart(): any[] {
-    if (typeof window !== 'undefined' && localStorage.getItem(this.cartKey)) {
-      return JSON.parse(localStorage.getItem(this.cartKey) || '[]');
+    try {
+      if (typeof window !== 'undefined' && 'localStorage' in window) {
+        const data = localStorage.getItem(this.cartKey);
+        return data ? JSON.parse(data) : [];
+      }
+    } catch (e) {
+      console.error('Error al acceder a localStorage:', e);
     }
     return [];
   }
@@ -66,5 +71,9 @@ export class ProductService {
     const cart = this.getCart().filter((item) => item.id !== id);
     localStorage.setItem(this.cartKey, JSON.stringify(cart));
     this.cartChanged.next(cart);
+  }
+  clearCart() {
+    localStorage.removeItem(this.cartKey);
+    this.cartChanged.next([]);
   }
 }
