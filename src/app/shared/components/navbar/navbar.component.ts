@@ -38,6 +38,7 @@ export class NavbarComponent implements OnInit {
   registroExitoso = false;
   @ViewChild('nicknameUserLogin', { static: false })
   nicknameUserLogin!: ElementRef;
+  selectedImage: File | null = null;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -53,7 +54,7 @@ export class NavbarComponent implements OnInit {
       id: 1,
       name: 'Gryffindor',
     },
-    image_url: '../../../../assets/img/foto_user_visitante.png',
+    imageBase64: '../../../../assets/img/foto_user_visitante.png',
   };
 
   userService = inject(UserService);
@@ -65,6 +66,7 @@ export class NavbarComponent implements OnInit {
       price_galleon: [0, [Validators.required, Validators.min(0)]],
       price_sickle: [0, [Validators.required, Validators.min(0)]],
       price_knut: [0, [Validators.required, Validators.min(0)]],
+      img_user: ['', [Validators.required]],
     });
   }
   ngOnInit(): void {
@@ -91,17 +93,35 @@ export class NavbarComponent implements OnInit {
   viewCarModal() {
     this.LoaderService.viewCarModal();
   }
+
+  onImageSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      this.selectedImage = file;
+    }
+  }
+
   registerUser() {
     if (this.registroForm.valid) {
       const formData = this.registroForm.value;
 
-      const bodyUser = {
-        name: formData.nickname,
-        price_galeon: formData.price_galleon,
-        price_sickle: formData.price_sickle,
-        price_knut: formData.price_knut,
-      };
-      this.SharedService.registerUser(bodyUser).subscribe({
+      const formDataToSend = new FormData();
+
+      formDataToSend.append('name', formData.nickname);
+      formDataToSend.append('price_galeon', formData.price_galleon);
+      formDataToSend.append('price_sickle', formData.price_sickle);
+      formDataToSend.append('price_knut', formData.price_knut);
+
+      if (this.selectedImage && this.selectedImage.size > 500 * 1024) {
+        alert('La imagen no puede superar los 500KB');
+        return;
+      }
+
+      if (this.selectedImage) {
+        formDataToSend.append('image', this.selectedImage);
+      }
+
+      this.SharedService.registerUser(formDataToSend).subscribe({
         next: (data) => {
           this.registroExitoso = true;
           this.modalOpenRegister = false;
@@ -109,6 +129,7 @@ export class NavbarComponent implements OnInit {
             this.registroExitoso = false;
           }, 5000);
           this.registroForm.reset();
+          this.selectedImage = null;
         },
         error: (err) => {
           console.error('❌ Error al registrar usuario', err);

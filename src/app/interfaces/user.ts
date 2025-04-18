@@ -10,7 +10,7 @@ export interface User {
   price_sickle: number;
   price_knut: number;
   house: House;
-  image_url: string;
+  imageBase64: string;
 }
 
 export interface CreateUser {
