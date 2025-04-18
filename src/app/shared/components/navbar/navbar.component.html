@@ -45,8 +45,10 @@
       <!-- Usuario -->
       <div class="flex items-center gap-1 cursor-pointer shrink-0" (click)="modalOpenLogin = true">
         <span class="truncate max-w-[70px]">{{ user.name }}</span>
-        <img [src]="user.image_url || '../../../../assets/img/foto_user_visitante.png'" alt="User"
-          class="w-6 h-6 rounded-full bg-white" />
+        <!-- imagen base64 -->
+        <img
+          [src]="user.imageBase64 ? 'data:image/png;base64,' + user.imageBase64 :'../../../../assets/img/foto_user_visitante.png' "
+          alt="User" class="w-6 h-6 rounded-full bg-white" />
       </div>
     </div>
 
@@ -137,6 +139,11 @@
       <div>
         <label for="price_knut" class="block text-sm font-medium mb-1">Cantidad de Knuts</label>
         <input formControlName="price_knut" id="price_knut" type="number" placeholder="Ej. 74"
+          class="w-full p-3 rounded-lg bg-green-100 text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-green-400" />
+      </div>
+      <div>
+        <label for="img_user" class="block text-sm font-medium mb-1">Foto</label>
+        <input formControlName="img_user" id="img_user" type="file" accept="image/*" (change)="onImageSelected($event)"
           class="w-full p-3 rounded-lg bg-green-100 text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-green-400" />
       </div>
 
