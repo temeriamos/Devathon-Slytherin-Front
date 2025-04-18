@@ -1,0 +1,33 @@
+@keyframes borderGlow {
+  0%,
+  100% {
+    border-color: #00ff88;
+    opacity: 0.6;
+  }
+  50% {
+    border-color: #1aff99;
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s infinite;
+}
+
+.animate-border-glow {
+  animation: borderGlow 3s infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
