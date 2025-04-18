@@ -45,7 +45,7 @@
       <!-- Usuario -->
       <div class="flex items-center gap-1 cursor-pointer shrink-0" (click)="modalOpenLogin = true">
         <span class="truncate max-w-[70px]">{{ user.name }}</span>
-        <img [src]="user.image_user || '../../../../assets/img/foto_user_visitante.png'" alt="User"
+        <img [src]="user.image_url || '../../../../assets/img/foto_user_visitante.png'" alt="User"
           class="w-6 h-6 rounded-full bg-white" />
       </div>
     </div>

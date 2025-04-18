@@ -53,7 +53,7 @@ export class NavbarComponent implements OnInit {
       id: 1,
       name: 'Gryffindor',
     },
-    image_user: '../../../../assets/img/foto_user_visitante.png',
+    image_url: '../../../../assets/img/foto_user_visitante.png',
   };
 
   userService = inject(UserService);
