@@ -9,7 +9,6 @@
             <input type="text" placeholder="🔍 Buscar hechizos, pociones o artefactos..." class="bg-[#1e1b1b99] border border-yellow-500 text-white placeholder:text-yellow-200
                  rounded-2xl px-6 py-2 w-full max-w-xl shadow-lg backdrop-blur-sm"
                 (input)="searchMagicObjectByName($event.target)" />
-            />
         </div>
 
     </div>
@@ -18,6 +17,7 @@
         @for (item of listCategoryMagicObjects; track $index) {
         <div class="bg-[#2d2d2d] border border-orange-400 px-4 py-2 rounded-2xl
          text-white text-sm cursor-pointer hover:bg-yellow-900 transition flex items-center gap-2"
+            [ngClass]="{'bg-yellow-900': item.id.toString() == categoryActive }"
             (click)="getMagicObjectByIdCategory(item.id)">
             <ng-container [ngSwitch]="item.name">
                 <span *ngSwitchCase="'Artefáctos Mágicos'">🪄</span>
@@ -29,7 +29,7 @@
             <span class="text-yellow-500 font-semibold">{{ item.name }}</span>
         </div>
         }
-        <div class="bg-[#2d2d2d] border border-orange-400 px-4 py-2 rounded-2xl
+        <div [ngClass]="{'bg-yellow-900': categoryActive == 'all' }" class="bg-[#2d2d2d] border border-orange-400 px-4 py-2 rounded-2xl
                  text-white text-sm cursor-pointer hover:bg-yellow-900 transition flex items-center gap-2"
             (click)="getMagicObjectByIdCategory('all')">
             <span class="text-yellow-500 font-semibold">Ver todos</span>
@@ -89,7 +89,7 @@
 
         }
     </section>
-    @if (!loading && magicObjects.length > 1) {
+    @if (!loading ) {
     <div class="flex justify-center my-6 px-4">
         <nav class="isolate inline-flex -space-x-px rounded-md shadow-xs" aria-label="Pagination">
             <a (click)="goToPage(currentPage-1 )"

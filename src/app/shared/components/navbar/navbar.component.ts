@@ -70,10 +70,25 @@ export class NavbarComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    let nickname = localStorage.getItem('nickname');
+
     this.ProductService.cart$.subscribe((cart) => {
       this.cart = cart;
+      if (!nickname || this.cart.length > 0) {
+        this.user = this.user;
+        return;
+      }
+      this.userService.getUserId(nickname).subscribe({
+        next: (data) => {
+          this.user = data;
+          localStorage.setItem('dataUser', JSON.stringify(data));
+        },
+        error: (err) => {
+          console.error('❌ Error al traer usuario', err);
+        },
+      });
     });
-    const nickname = localStorage.getItem('nickname');
+
     if (!nickname) {
       this.user = this.user;
       return;
