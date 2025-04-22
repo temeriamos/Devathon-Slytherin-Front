@@ -27,6 +27,7 @@ export class ProductPageComponent {
   searchSubject = new Subject<string>();
   visible = false;
   imgProducSelected = '';
+  categoryActive = 'all';
 
   constructor() {
     const currentPage = localStorage.getItem('currentPageProduct') || 0;
@@ -91,6 +92,7 @@ export class ProductPageComponent {
     );
   }
   getMagicObjectByIdCategory(category: any, page?: string) {
+    this.categoryActive = category;
     this.currentPage = 0;
     localStorage.setItem('currentPageProduct', '0');
     localStorage.setItem('categoryProductFilter', category);
