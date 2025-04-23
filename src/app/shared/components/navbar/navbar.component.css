@@ -3,9 +3,9 @@
   border-top: 1px solid #b3a389;
   border-bottom: 1px solid #b3a389;
 }
-.navbar div a {
+/* .navbar div a {
   font-family: "Unzialish", sans-serif;
-}
+} */
 
 @keyframes fade-in-out {
   0% {

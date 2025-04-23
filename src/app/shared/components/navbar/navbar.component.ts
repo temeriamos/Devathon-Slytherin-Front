@@ -35,6 +35,8 @@ export class NavbarComponent implements OnInit {
   modalOpenLogin = false;
   modalOpenRegister = false;
   msgErrorForm = false;
+  msgErrorLogin = '';
+
   registroExitoso = false;
   @ViewChild('nicknameUserLogin', { static: false })
   nicknameUserLogin!: ElementRef;
@@ -165,7 +167,10 @@ export class NavbarComponent implements OnInit {
         localStorage.setItem('dataUser', JSON.stringify(data));
       },
       error: (err) => {
-        console.error('❌ Error al traer usuario', err);
+        this.msgErrorLogin = err.error.details[0];
+        setTimeout(() => {
+          this.msgErrorLogin = '';
+        }, 5000);
       },
     });
   }
