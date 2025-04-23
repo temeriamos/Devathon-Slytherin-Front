@@ -11,20 +11,20 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'product',
+    redirectTo: 'home',
   },
   {
     path: 'home',
     pathMatch: 'full',
-    component:HomePageComponent
+    component: HomePageComponent,
   },
   {
     path: 'profile',
     pathMatch: 'full',
-    component:ProfilePageComponent
+    component: ProfilePageComponent,
   },
   {
     path: '**',
-    redirectTo: 'product',
+    redirectTo: 'home',
   },
 ];
