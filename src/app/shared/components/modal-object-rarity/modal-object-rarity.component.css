@@ -1,0 +1,15 @@
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 2px #7fffd465);
+  }
+  50% {
+    opacity: 0.3;
+    filter: drop-shadow(0 0 6px #00ffd581);
+  }
+}
+
+.animate-flicker {
+  animation: flicker 2.5s infinite ease-in-out;
+}
