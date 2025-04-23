@@ -1,42 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { NavbarComponent } from "../../shared/components/navbar/navbar.component";
-import { SliderComponent } from "./components/slider/slider.component";
-import { UserService } from 'src/app/services/user.service';
-import { HttpClientModule } from '@angular/common/http';
-import { MagicObjectService } from 'src/app/services/magic-object.service';
-import { FooterComponent } from 'src/app/shared/components/footer/footer.component';
-
+import { Component, inject, OnInit } from '@angular/core';
+import { SliderComponent } from './components/slider/slider.component';
+import { ProductService } from '../product/services/product.service';
+import { MagicObject } from '../product/interface/productInterfaces';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [NavbarComponent, SliderComponent,HttpClientModule, FooterComponent],
+  imports: [SliderComponent, CommonModule],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css'
+  styleUrl: './home-page.component.css',
 })
 export class HomePageComponent implements OnInit {
-
-
-  constructor(
-    private userService : UserService,
-    private magicObjectService: MagicObjectService){
-
-  }
+  ProductService = inject(ProductService);
+  magicObjects: MagicObject[] = [];
+  imgProducSelected = '';
+  stateModal = false;
+  productDetail: MagicObject | null = null;
+  visible = false;
+  sliderImages: string[] = [];
 
   ngOnInit(): void {
+    this.getMagicObjects();
+  }
+  getMagicObjects() {
+    this.ProductService.getMagicObjects(0, 100).subscribe((data) => {
+      const allObjects = data.magic_objects;
+      this.sliderImages = allObjects.map(
+        (magicObject) => magicObject.url_image
+      );
 
-    this.userService.getAllUser().subscribe({
-      next: (data: any) => {
-        console.log('✅ Conexión exitosa. Datos recibidos:', data);
-      },
-      error: (err: any) => {
-        console.error('❌ Error en la conexión:', err);
-      }
+      this.magicObjects = [...allObjects]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 3);
     });
-
-    this.magicObjectService.getAllMagicObj(1, 10).subscribe({
-      next: (data) => console.log('Objetos mágicos:', data),
-      error: (err) => console.error('Error al obtener objetos', err)
-    });
+  }
+  addToCart(objetoMagico: MagicObject) {
+    this.imgProducSelected = objetoMagico.url_image;
+    this.ProductService.addToCart(objetoMagico);
+    this.visible = true;
+  }
+  close() {
+    this.visible = false;
+  }
+  getDetailProduct(id: number) {
+    this.productDetail = this.magicObjects.find(
+      (magicObject) => magicObject.id === id
+    ) as MagicObject;
   }
 }

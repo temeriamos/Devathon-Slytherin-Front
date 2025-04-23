@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LoaderService } from '../../services/loader-service.service';
+import { SharedService } from '../../services/shared.service';
 
 @Component({
   selector: 'app-btn-object-rarity',
@@ -9,6 +11,9 @@ import { Component } from '@angular/core';
   styleUrl: './btn-object-rarity.component.css',
 })
 export class BtnObjectRarityComponent {
+  LoaderService = inject(LoaderService);
+
+  sharedService = inject(SharedService);
   isVisible = true;
   private intervalId: any;
   private timeoutId: any;
@@ -31,5 +36,8 @@ export class BtnObjectRarityComponent {
   ngOnDestroy(): void {
     clearInterval(this.intervalId);
     clearTimeout(this.timeoutId);
+  }
+  openModal(): void {
+    this.sharedService.viewModalObjetRarity$.next(true);
   }
 }

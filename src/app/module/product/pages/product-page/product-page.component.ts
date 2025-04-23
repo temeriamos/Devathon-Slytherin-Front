@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { ProductService } from '../../services/product.service';
 import {
   CategoryMagicObject,
@@ -11,7 +10,7 @@ import { debounceTime, Subject } from 'rxjs';
 @Component({
   selector: 'app-product-page',
   standalone: true,
-  imports: [NavbarComponent, CommonModule],
+  imports: [CommonModule],
   templateUrl: './product-page.component.html',
   styleUrl: './product-page.component.css',
 })
