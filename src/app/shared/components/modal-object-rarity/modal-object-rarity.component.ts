@@ -3,6 +3,8 @@ import { SharedService } from '../../services/shared.service';
 import { CommonModule } from '@angular/common';
 import { LoaderService } from '../../services/loader-service.service';
 import { FormsModule } from '@angular/forms';
+import { ProductService } from 'src/app/module/product/services/product.service';
+import { MagicObject } from 'src/app/interfaces/magic-object';
 
 @Component({
   selector: 'app-modal-object-rarity',
@@ -13,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ModalObjectRarityComponent {
   SharedService = inject(SharedService);
+  ProductService = inject(ProductService);
   objectRarityList: any[] = [];
   isOpen = false;
   items = [
@@ -332,6 +335,11 @@ export class ModalObjectRarityComponent {
   respuestaSeleccionada: string = '';
   selectObjectRarity: any;
   viewModalObjectRarity: boolean = false;
+  productDetail: MagicObject | null = null;
+  imgProducSelected = '';
+  stateModal = false;
+  visible = false;
+  visibleError = false;
   constructor() {
     this.objectRarity();
     this.SharedService.viewModalObjetRarity$.subscribe((data: any) => {
@@ -350,6 +358,13 @@ export class ModalObjectRarityComponent {
 
       data.sort((a: any, b: any) => a.rarity - b.rarity);
       this.objectRarityList = data;
+      const bannedObject = localStorage.getItem('objectbanned');
+      if (bannedObject) {
+        const bannedId = JSON.parse(bannedObject);
+        this.objectRarityList = this.objectRarityList.filter(
+          (item) => item.id !== bannedId
+        );
+      }
     });
   }
   shuffleArray(array: any[]): any[] {
@@ -369,10 +384,37 @@ export class ModalObjectRarityComponent {
     const isCorrect =
       this.respuestaSeleccionada === this.questions.correctAnswer;
     this.mostrarPreguntaModal = false;
+
     if (isCorrect) {
       this.viewModalObjectRarity = true;
     } else {
+      this.visibleError = true;
       this.viewModalObjectRarity = false;
+      this.objectRarityList = this.objectRarityList.filter(
+        (item) => item.id !== this.selectObjectRarity.id
+      );
+      localStorage.setItem(
+        'objectbanned',
+        JSON.stringify(this.selectObjectRarity.id)
+      );
     }
+  }
+
+  getDetailProduct() {
+    this.productDetail = this.selectObjectRarity;
+  }
+
+  addToCart() {
+    this.viewModalObjectRarity = false;
+    this.imgProducSelected = this.selectObjectRarity.url_image;
+    this.ProductService.addToCart(this.selectObjectRarity);
+    this.visible = true;
+    this.objectRarityList = this.objectRarityList.filter(
+      (item) => item.id !== this.selectObjectRarity.id
+    );
+    localStorage.setItem(
+      'objectbanned',
+      JSON.stringify(this.selectObjectRarity.id)
+    );
   }
 }

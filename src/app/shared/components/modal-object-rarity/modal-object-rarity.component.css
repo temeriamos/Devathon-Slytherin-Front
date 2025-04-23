@@ -2,14 +2,56 @@
   0%,
   100% {
     opacity: 1;
-    filter: drop-shadow(0 0 2px #7fffd465);
+    filter: drop-shadow(0 0 2px #7fffd4);
   }
   50% {
     opacity: 0.3;
-    filter: drop-shadow(0 0 6px #00ffd581);
+    filter: drop-shadow(0 0 6px #00ffd5);
   }
 }
 
 .animate-flicker {
   animation: flicker 2.5s infinite ease-in-out;
+}
+
+@keyframes fly-into-chest {
+  0% {
+    transform: translate(-50%, -150%) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, 0%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 80%) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.animate-fly-into-chest {
+  animation: fly-into-chest 3s ease-in-out forwards;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out;
+}
+
+.text-slytherin-green {
+  color: #2ecc71;
+}
+
+.bg-slytherin-green {
+  background-color: #2ecc71;
 }
