@@ -347,7 +347,7 @@ export class ModalObjectRarityComponent {
     });
   }
   objectRarity() {
-    this.SharedService.getObjectRarity(3).subscribe((data) => {
+    this.SharedService.getObjectRarity(4).subscribe((data) => {
       // Mezclar las posiciones
       const shuffledPositions = this.shuffleArray([...this.items]);
 
