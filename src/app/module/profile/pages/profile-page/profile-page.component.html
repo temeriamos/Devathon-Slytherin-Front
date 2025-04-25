@@ -1,0 +1,152 @@
+<div class="min-h-screen bg-cover bg-center bg-no-repeat py-0"
+    style="background-image: url('assets/img/fondo.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+
+    <div class="relative flex flex-col items-center justify-center p-4 text-white">
+        <!-- Nombre -->
+        <h2 class="text-center font-bold text-3xl mb-4 mt-5">Hola, {{ dataUser?.name }}</h2>
+
+        <!-- Imagen Circular del Usuario (o imagen por defecto si es null) -->
+        <div class="relative mb-6">
+            <img [src]="dataUser?.imageBase64 ? 'data:image/png;base64,' + dataUser?.imageBase64 :'../../../../assets/img/foto_user_visitante.png'"
+                alt="User"
+                class="w-24 h-24 rounded-full border-4 border-solid border-green-900 shadow-md hover:scale-105 transition-all duration-300 ease-in-out" />
+        </div>
+
+        <!-- Título de Monedas -->
+        <h3 class="text-center font-semibold text-xl mb-1 mt-5">Monedas</h3>
+
+        <!-- Monedas con fondo semi-transparente -->
+        <div class="flex items-center gap-6 mt-4 bg-opacity-50 bg-gray-800 p-4 rounded-lg mb-5">
+            <!-- Galeón -->
+            <div class="flex flex-col items-center">
+                <img src="../../../../assets/img/galleon.png" alt="Galleon" class="w-10 h-10 mb-2" />
+                <span class="truncate">{{ dataUser?.price_galeon }}</span>
+            </div>
+
+            <!-- Sickle -->
+            <div class="flex flex-col items-center">
+                <img src="../../../../assets/img/icon-sickle.png" alt="Sickle" class="w-10 h-10 mb-2" />
+                <span class="truncate">{{ dataUser?.price_sickle }}</span>
+            </div>
+
+            <!-- Knut -->
+            <div class="flex flex-col items-center">
+                <img src="../../../../assets/img/icon-knut.png" alt="Knut" class="w-10 h-10 mb-2" />
+                <span class="truncate">{{ dataUser?.price_knut }}</span>
+            </div>
+        </div>
+
+        <!-- Título de Compras -->
+        <h3 class="text-center font-semibold text-xl mb-1 mt-10">Inventario</h3>
+
+        <!-- Mostrar objetos mágicos comprados -->
+        <section class="flex flex-wrap justify-center gap-6 mt-6 w-full px-4">
+            <div *ngFor="let item of magicObjects; let i = index"
+                class="relative w-72 h-[470px] bg-[#1a1a1a] rounded-lg shadow-lg text-white overflow-hidden hover:shadow-yellow-500/50 transition-shadow duration-300"
+                style="background-image: url('assets/img/border-card.png'); background-size: cover; background-position: center;">
+
+                <div class="flex flex-col items-center p-4 h-full gap-2">
+
+                    <!-- Imagen del objeto mágico -->
+                    <img [src]="item.url_image" alt="Objeto mágico"
+                        class="w-70 h-[120px] object-cover rounded-md shadow-md mt-[100px]" />
+
+                    <!-- Nombre del objeto mágico -->
+                    <h3 class="text-sm font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">
+                        {{ item.objectName.length > 20 ? (item.objectName.slice(0, 20).trim() + '...') :
+                        item.objectName.trim() }}
+                    </h3>
+
+                    <!-- Descripción corta del objeto mágico -->
+                    <div class="h-[40px] flex items-center justify-center gap-2 w-[80%] text-center">
+                        <p class="text-sm px-1 text-center">
+                            {{ item.short_description.length > 50 ? (item.short_description.slice(0, 50).trim() + '...')
+                            : item.short_description.trim() }}
+                        </p>
+                    </div>
+
+                    <!-- Fecha de compra -->
+                    <div class="text-xs text-center w-[85%] text-gray-400">
+                        <p>Comprado el: {{ item.date }}</p>
+                    </div>
+
+                    <!-- Botón de Detalles y Rareza en una sola fila -->
+                    <div class="flex justify-between items-center w-[85%] px-6 mt-1">
+                        <!-- Botón de Detalles -->
+                        <button (click)="stateModal = true; getDetailProduct(item.id)"
+                            class="bg-yellow-500 text-black rounded px-3 py-1 text-xs hover:bg-yellow-600">
+                            Detalles</button>
+                        <!-- Rareza del objeto mágico -->
+                        <div class="text-sm font-semibold flex items-center gap-1 rounded-md px-2 shadow-inner border border-lime-50"
+                            [ngClass]="{
+                                'bg-gray-500': item.rarity.name === 'Común',
+                                'bg-indigo-500': item.rarity.name === 'Épico',
+                                'bg-green-500': item.rarity.name === 'Legendario'
+                            }">
+                            <ng-container [ngSwitch]="item.rarity.name">
+                                <span *ngSwitchCase="'Común'">🔹</span>
+                                <span *ngSwitchCase="'Épico'">🔮</span>
+                                <span *ngSwitchCase="'Legendario'">🌟</span>
+                            </ng-container>
+                            <span>{{ item.rarity.name }}</span>
+                        </div>
+                    </div>
+
+
+                    <!-- Precios en diferentes monedas -->
+                    <div class="text-xs flex items-center justify-center gap-1 w-[65%] text-center">
+                        <span class="text-yellow-500">🟡Galeones: {{ item.price_galeon }}</span>
+                        <span class="text-yellow-500">⚪Sickles: {{ item.price_sickle }}</span>
+                        <span class="text-yellow-500">🟤Knuts: {{ item.price_knut }}</span>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@if(stateModal) {
+<div class="relative z-10 " aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-base font-semibold text-gray-900 text-center" id="modal-title">
+                                {{productDetail!.name}}
+                            </h3>
+                            <div class="mt-2 flex justify-center items-center gap-2">
+                                <img src="{{productDetail!.url_image}}" alt="Objeto mágico"
+                                    class="w-40 h-40 object-cover rounded-md shadow-md" />
+
+                            </div>
+
+
+                            <div class="mt-2">
+                                <p class="text-l text-gray-500">
+                                    {{productDetail!.long_description}}
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button (click)="stateModal = false" type="button"
+                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3
+                            py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1
+                             ring-gray-300 ring-inset sm:mt-0 sm:w-auto
+                             border-orange-500/50 hover:border-orange-500/50 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:ring-offset-2 transition-colors duration-200">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

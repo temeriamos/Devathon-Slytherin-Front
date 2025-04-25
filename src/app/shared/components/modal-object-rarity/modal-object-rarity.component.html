@@ -1,0 +1,211 @@
+<div [ngClass]="{'hidden': !isOpen}"
+    class=" fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-80 z-50 flex items-center justify-center">
+    <button (click)="isOpen = false"
+        class="absolute top-4 right-10 z-50 text-white text-5xl font-bold hover:text-red-400 transition duration-300">
+        &times;
+    </button>
+
+    <div class="relative w-full h-full overflow-auto">
+
+        <div class="min-w-[2000px] min-h-[1500px] relative">
+            <img src="../../../../assets/img/mapa2.jpg" class="w-full h-full object-cover absolute top-0 left-0 z-0"
+                alt="Mapa" />
+
+            <div class="absolute top-0 left-0 w-full h-full bg-black opacity-60 z-10"></div>
+
+
+            <div class="pt-20 text-center relative z-20">
+                <h2 class="text-4xl font-bold text-green-200 drop-shadow-md animate-fade-slide-in">
+                    Un velo de secretos cubre este mapa ancestral...
+                </h2>
+                <p class="text-green-100 text-lg mt-4 italic px-4 max-w-xl mx-auto animate-fade-slide-in delay-500">
+                    Explora cada rincón, revela lo oculto y resuelve enigmas antiguos para reclamar objetos prohibidos.
+                    Sólo los más astutos podrán añadirlos a su colección.
+                </p>
+            </div>
+
+            @for (item of objectRarityList; track $index) {
+            <div (click)="openModalTrivia(item)" class="absolute z-20 cursor-pointer animate-flicker"
+                [style.top]="item.top" [style.left]="item.left">
+                <img src="../../../../assets/img/Baul.png" alt="Rarity" class="w-6 h-auto rounded-full border-1" />
+            </div>
+            }
+        </div>
+
+    </div>
+
+</div>
+
+
+<div *ngIf="mostrarPreguntaModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center">
+
+    <button (click)="mostrarPreguntaModal = false"
+        class="absolute top-4 right-10 z-50 text-white text-5xl font-bold hover:text-red-400 transition duration-300">
+        &times;
+    </button>
+    <div class="bg-gray-900 text-white rounded-xl shadow-xl w-full max-w-md p-6 relative">
+
+        <h2 class="text-xl font-bold mb-4 text-green-300 animate-fade-in-slow">🧩 Enigma mágico</h2>
+
+        <p class="mb-6 text-lg animate-fade-in-slow">{{ questions.text }}</p>
+
+        <div class="space-y-3 animate-fade-in-slow">
+            <div *ngFor="let respuesta of questions.options; let i = index">
+                <label class="flex items-center gap-2 cursor-pointer hover:text-green-400">
+                    <input type="radio" name="respuesta" [value]="respuesta" [(ngModel)]="respuestaSeleccionada"
+                        [ngModelOptions]="{standalone: true}" class="accent-green-500" />
+                    {{ respuesta }}
+                </label>
+            </div>
+
+            <!-- Botón de Enviar -->
+            <button (click)="sendAnswer()" type="submit"
+                class="mt-4 bg-green-600 hover:bg-green-700 transition text-white py-2 px-4 rounded w-full">
+                Enviar respuesta
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="viewModalObjectRarity" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+
+    <button (click)="viewModalObjectRarity = false"
+        class="absolute top-4 right-10 z-50 text-white text-5xl font-bold hover:text-red-400 transition duration-300">
+        &times;
+    </button>
+    <div class="relative w-72 h-[470px] bg-[#1a1a1a] rounded-lg shadow-lg
+         text-white overflow-hidden hover:shadow-yellow-500/50 transition-shadow duration-300"
+        style="background-image: url('assets/img/border-card.png'); background-size: cover; background-position: center;">
+        <button (click)="viewModalObjectRarity = false"
+            class="absolute top-2 right-2 text-white hover:text-red-500 z-50">
+            &times;
+        </button>
+
+        <div class="flex flex-col items-center p-4 h-full gap-2">
+            <img src="{{selectObjectRarity.url_image}}" alt="Objeto mágico"
+                class="w-70 h-[120px] object-cover rounded-md shadow-md mt-[100px]" />
+            <h3 class="text-sm font-semibold text-[#00a86b] my-0 p-0 titulo-articulo">
+                {{selectObjectRarity.name.length > 20 ?
+                (selectObjectRarity.name.slice(0, 20).trim() + '...') : selectObjectRarity.name.trim()}}
+            </h3>
+
+            <div class="h-[45px] flex items-center justify-center gap-2 w-[85%] text-center">
+                <p class="text-sm px-2 text-center">{{selectObjectRarity.short_description.length > 50 ?
+                    (selectObjectRarity.short_description.slice(0, 50).trim() + '...') :
+                    selectObjectRarity.short_description.trim()}}
+                </p>
+            </div>
+            <div class="flex justify-between w-full  px-6 mt-0">
+                <button (click)="stateModal = true" (click)="getDetailProduct()"
+                    class="bg-yellow-500 text-black rounded px-3 py-0 text-xs hover:bg-yellow-600">Detalles</button>
+                <button class="bg-yellow-500 text-black rounded px-3 py-1 text-xs hover:bg-yellow-600"
+                    (click)="addToCart()">Agregar</button>
+            </div>
+            <div class="text-xs mt-1 flex items-center justify-center gap-1 w-[85%] text-center">
+                <span class="text-yellow-500">🟤Knuts: {{selectObjectRarity.price_knut}}</span>
+                <span class="text-yellow-500">⚪Sickles: {{selectObjectRarity.price_sickle}}</span>
+                <span class="text-yellow-500">🟡Galeones: {{selectObjectRarity.price_galeon}}</span>
+            </div>
+
+            <div class="mb-4 text-sm font-semibold flex flex-col items-center
+                    gap-1 rounded-md px-2 shadow-inner border border-lime-50" [ngClass]="{'bg-gray-500': selectObjectRarity.rarity.name === 'Común',
+                           'bg-indigo-500': selectObjectRarity.rarity.name === 'Épico',
+                           'bg-green-500': selectObjectRarity.rarity.name === 'Legendario'}">
+                <small class="flex items-center">
+                    <ng-container [ngSwitch]="selectObjectRarity.rarity.name">
+                        <span *ngSwitchCase="'Común'">🔹</span>
+                        <span *ngSwitchCase="'Épico'">🔮</span>
+                        <span *ngSwitchCase="'Legendario'">🌟</span>
+                    </ng-container>
+                    <span>{{ selectObjectRarity.rarity.name }}</span>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if(stateModal) {
+<div class="relative z-50 " aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 z-50 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+            <div
+                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="text-base font-semibold text-gray-900 text-center" id="modal-title">
+                                {{productDetail!.name}}
+                            </h3>
+                            <div class="mt-2 flex justify-center items-center gap-2">
+                                <img src="{{productDetail!.url_image}}" alt="Objeto mágico"
+                                    class="w-40 h-40 object-cover rounded-md shadow-md" />
+
+                            </div>
+
+
+                            <div class="mt-2">
+                                <p class="text-l text-gray-500">
+                                    {{productDetail!.long_description}}
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button (click)="stateModal = false" type="button"
+                        class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3
+                        py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1
+                         ring-gray-300 ring-inset sm:mt-0 sm:w-auto
+                         border-orange-500/50 hover:border-orange-500/50 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:ring-offset-2 transition-colors duration-200">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@if (visible) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity">
+    <div
+        class="relative flex flex-col items-center justify-center rounded-xl bg-[#1a1a1a] p-6 text-white shadow-xl border-2 border-green-800 animate-fade-in-up">
+        <div class="relative mb-4">
+            <img src="{{imgProducSelected}}" alt="Objeto mágico"
+                class="absolute left-1/2 top-0 size-20 -translate-x-1/2 animate-fly-into-chest rounded-full" />
+            <img src="../../../../../assets/img/Baul.png" alt="Baúl de Slytherin" class="size-32" />
+        </div>
+
+        <h2 class="text-xl font-bold text-slytherin-green">¡Hechizo exitoso!</h2>
+        <p class="text-sm mt-2 text-center text-gray-300">
+            Tu objeto ha sido enviado al baúl de Slytherin.
+        </p>
+
+        <button class="mt-4 rounded-md bg-slytherin-green px-4 py-2 text-sm font-semibold text-black hover:bg-green-400"
+            (click)="visible = false">
+            Cerrar
+        </button>
+    </div>
+</div>}
+
+@if (visibleError) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity">
+    <div
+        class="relative flex flex-col items-center justify-center rounded-xl bg-[#1a1a1a] p-6 text-white shadow-xl border-2 border-red-800 animate-fade-in-up">
+        <div class="relative mb-4">
+            <img src="../../../../assets/img/guard.png" alt="Error"
+                class="size-20 animate-pulse rounded-full border-2 border-red-600 p-2 bg-black" />
+        </div>
+
+        <h2 class="text-xl font-bold text-red-500">¡Respuesta incorrecta!</h2>
+        <p class="text-sm mt-2 text-center text-gray-300">
+            Intenta de nuevo y recuerda repasar tus hechizos.
+        </p>
+
+        <button class="mt-4 rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-400"
+            (click)="visibleError = false">
+            Reintentar
+        </button>
+    </div>
+</div>}

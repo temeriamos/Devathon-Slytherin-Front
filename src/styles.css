@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap");
+
+/* --------------------fonts ----------- */
+@font-face {
+  font-family: "Unzialish";
+  src: url("assets/fonts/UnZialish.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+/* --------------------End - fonts ----------- */
+
+html,
+body {
+  height: 100%;
+  font-family: "Uncial Antiqua", cursive;
+}
+@layer utilities {
+  @keyframes fade-slide-in {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-slide-in {
+    animation: fade-slide-in 1.2s ease-out both;
+  }
+
+  .delay-500 {
+    animation-delay: 0.5s;
+  }
+}
